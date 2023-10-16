@@ -1,23 +1,14 @@
+import bagel.*;
 public abstract class StaticObject {
 
     // Constants
-    public static final String FILEPATH;
+    private Image img;
 
     // Attributes
-    public double xCoordinate;
-    public double yCoordinate;
-
-    // Constructor(s)
-    public StaticObject() {
-        // TODO: Initialize necessary attributes and operations if any
-    }
+    private double xCoordinate;
+    private double yCoordinate;
 
     // Methods
-
-    // Method to render the StaticObject
-    public void render() {
-        // Implement the method to render the StaticObject
-    }
 
     // Getter for xCoordinate
     public double getXCoordinate() {
@@ -38,4 +29,7 @@ public abstract class StaticObject {
     public void setYCoordinate(double yCoordinate) {
         this.yCoordinate = yCoordinate;
     }
+
+    public abstract void setImg();
+    public abstract Image getImg();
 }

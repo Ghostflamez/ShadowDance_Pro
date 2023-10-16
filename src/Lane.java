@@ -1,29 +1,37 @@
+import bagel.Image;
+
 public class Lane extends StaticObject{
 
-    // Attributes
-    public static final String FILEPATH;
-    public static final double refY = 657;
-    private double xCoordinate;
-    private double yCoordinate;
-    public String laneType;
 
-    // Constructors
-    // Implement constructors as required
+    // Attributes
+
+    private Image img;
+    private double xCoordinate;
+    private static final double yCoordinate = 384.0;
+    private String laneType;
+
+    // Constructor
+    public Lane(String type, String xCoordinate) {
+        this.laneType = type;
+        this.img = new Image("res/lane" + this.laneType + ".png");
+        this.xCoordinate = Double.parseDouble(xCoordinate);
+    }
 
     // Methods
-    public void setYCoordinate(double yPos) {
-        yCoordinate = yPos;
+
+    public String getLaneType() {
+        return laneType;
     }
 
-    public double getYCoordinate() {
-        return yCoordinate;
+    @Override
+    public void setYCoordinate(double yCoordinate){
+        System.out.print("Lane yCoordinate cannot be set");
     }
+    @Override
+    public void setImg(){
+        this.img = new Image("res/lane" + getLaneType() + ".png");
+    };
+    @Override
+    public Image getImg(){return img;}
 
-    public double getRefY() {
-        return refY;
-    }
-
-    public void render() {
-        // Implement the render logic
-    }
 }

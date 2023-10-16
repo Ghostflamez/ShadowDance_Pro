@@ -1,45 +1,41 @@
 public class Speed {
 
     // Attributes
-    private int xSpeed;
-    private int ySpeed;
-    private Array speedSet;  // The exact type of Array might need to be changed based on the specific requirements
+    private double xSpeed; //X coordinate increment of each frame
+    private double ySpeed; //Y coordinate increment of each frame
 
     // Constructors
     // Implement constructors as required
 
     // Getter and Setter methods for xSpeed and ySpeed
-    public int getXSpeed() {
-        return xSpeed;
-    }
-
-    public void setXSpeed(int xSpeed) {
+    public Speed(double xSpeed, double ySpeed) {
         this.xSpeed = xSpeed;
-    }
-
-    public int getYSpeed() {
-        return ySpeed;
-    }
-
-    public void setYSpeed(int ySpeed) {
         this.ySpeed = ySpeed;
     }
 
-    // Methods
-    private Array speedArray(int xVel, int yVel) {
-        // Implement the logic to create the speed array using xVel and yVel
-        // Return the resulting Array
-        return null;  // Placeholder return statement
+    public double getXSpeed() {
+        return xSpeed;
     }
 
-    public void setSpeed(Array vel) {
-        // Implement logic to set the speed using the provided array 'vel'
+    public void setXSpeed(double xSpeed) {
+        this.xSpeed = xSpeed;
     }
 
-    public Array getSpeed() {
-        // Implement logic to get the speed
-        // Return the resulting speed as an Array
-        return speedSet;
+    public double getYSpeed() {
+        return ySpeed;
     }
 
+    public void setYSpeed(double ySpeed) {
+        this.ySpeed = ySpeed;
+    }
+
+    public void setSpeed(double xSpeed, double ySpeed) {
+        this.xSpeed = xSpeed;
+        this.ySpeed = ySpeed;
+    }
+
+    public void changeSpeed(int multiplier) {
+        this.xSpeed *= multiplier;
+        this.ySpeed *= multiplier;
+    }
 }

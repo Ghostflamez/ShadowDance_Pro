@@ -1,23 +1,29 @@
+import bagel.*;
 public class Message {
 
     // Attributes
-    private String name;
+    private static final String font = "res/FSO8BITR.TTF";
     private int fontSize;
+    private Font fontOptions;
     private String text;
     private double xCoordinate;
     private double yCoordinate;
-    private int size;
-    private double[] colour = new double[3];
+
+    private DrawOptions colour = (new DrawOptions()).setBlendColour(1.0, 1.0, 1.0);
+
 
     // Constructors
-    // Implement constructors as required
-
-    // Methods
-    public void drawString() {
-        // Implement the logic for drawing the string
+    public Message(int fontSize, String text, double xCoordinate, double yCoordinate, double[] colour) {
+        this.fontSize = fontSize;
+        this.fontOptions = new Font(this.font, fontSize);
+        this.text = text;
+        this.xCoordinate = xCoordinate;
+        this.yCoordinate = yCoordinate;
+        this.colour = (new DrawOptions()).setBlendColour(colour[0], colour[1], colour[2]);
     }
 
-    // Getters and setters
-    // Implement getters and setters for the attributes
-
+    // Methods
+    public void draw() {
+        this.fontOptions.drawString(this.text, this.xCoordinate, this.yCoordinate, this.colour);
+    }
 }

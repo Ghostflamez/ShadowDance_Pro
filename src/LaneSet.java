@@ -1,25 +1,34 @@
 import java.util.ArrayList;
 import java.util.List;
+import ActionModules.Reader;
 public class LaneSet {
 
     // Attributes
     private List<Lane> laneSet;
-    private int mode = 1;
+    private List<List<String>> list;
+    private int level;
 
     // Constructors
-    // Implement constructors as required
+    public LaneSet(int level) {
+        this.level = level;
+        this.laneSet = new ArrayList<>();
+        Reader reader = new Reader(); // Instantiate Reader
 
-    // Methods
-    public LaneSet() {
-        laneSet = new ArrayList<>();
+        this.list = reader.getLaneList(this.level); // Fetch the appropriate laneList
+        for (List<String> lane : list) {
+            Lane newLane = new Lane(lane.get(1), lane.get(2)); // Extracting the 2nd and 3rd values
+            this.addLane(newLane); // Adding the new Lane object to laneSet
+        }
     }
 
+
+    // Methods
     public void addLane(Lane lane) {
         laneSet.add(lane);
     }
 
-    public int getMode() {
-        return mode;
+    public int getLevel() {
+        return level;
     }
 
     // Additional methods and attributes can be added as required

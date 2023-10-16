@@ -1,17 +1,20 @@
+import bagel.Font;
+
 public class ScoreCounter extends Message{
 
     // Attributes
-    private int scoreCount;
-    private String name;
+    // Attributes
+    private static final String font = "res/FSO8BITR.TTF";
+    private int fontSize;
+    private Font fontOptions;
     private String text;
     private double xCoordinate;
     private double yCoordinate;
-    private int size;
-    private double[] colour = new double[3];
 
     // Constructors
-    // Implement constructors as required
-
+    public ScoreCounter(int fontSize, String text, double xCoordinate, double yCoordinate, double[] colour) {
+        super(fontSize, text, xCoordinate, yCoordinate, colour);
+    }
     // Methods
 
     public void addScore(int frameScore) {

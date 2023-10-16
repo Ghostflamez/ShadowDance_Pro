@@ -1,70 +1,87 @@
+import bagel.*;
 public class Note extends MovingObject{
 
-    public static final String FILEPATH = "";
-    public static final String type = "Normal";
+    private Image img;
     private double xCoordinate;
-    private double yCoordinate;
-    private Speed speed;
+    private double yCoordinate = 100.0;
+    private Speed speed = new Speed(0,2.0);
     private String noteDirection;
     private int initialFrame;
     private int lastFrame;
+    public String noteType = "Normal";
+    private String specialType;
 
+    private boolean visibility = true;
 
-    public void setSpeed(Speed defaultSpeed) {
+    //constructor
+    public Note (String row1, String row2, String initialFrame){
+        if (row1.equals("Special")){
+            this.specialType = row2;
+            this.initialFrame = Integer.parseInt(initialFrame);
+            this.lastFrame = this.initialFrame + (int) Math.ceil(668.0/ speed.getYSpeed());
+            this.img = new Image("res/note" + this.specialType + ".png");
+        } else if (row2.equals("Hold")){
+            this.noteDirection = row1;
+            this.initialFrame = Integer.parseInt(initialFrame);
+            this.lastFrame = this.initialFrame + (int) Math.ceil(826.0/ speed.getYSpeed());
+            this.img = new Image("res/holdNote" + this.noteDirection + ".png");
+        } else if (row2.equals("Normal")){
+                this.noteDirection = row1;
+                this.initialFrame = Integer.parseInt(initialFrame);
+                this.lastFrame = this.initialFrame + (int) Math.ceil(668.0/ speed.getYSpeed());
+                this.img = new Image("res/note" + this.noteDirection + ".png");
+        } else if(row2.equals("Bomb")){
+                this.specialType = row2;
+                this.noteDirection = row1;
+                this.initialFrame = Integer.parseInt(initialFrame);
+                this.lastFrame = this.initialFrame + (int) Math.ceil(668.0/ speed.getYSpeed());
+                this.img = new Image("res/note" + this.specialType + ".png");
+        }
 
     }
-
-    public Object[] getSpeed() {  // 注意：返回类型是Object[]，具体应根据实际情况调整
-
-        return null;
-    }
-
-    public void update() {
-
-    }
-
-    public double getXCoordinate() {
-        return xCoordinate;
-    }
-
-    public double getYCoordinate() {
-        return yCoordinate;
-    }
+    //methods
 
     public String getDirection() {
         return noteDirection;
     }
 
-    public int getInitialFrame() {
-        return initialFrame;
-    }
-
-    public int getLastFrame() {
-        return lastFrame;
-    }
 
     public String getType() {
-        return type;
-    }
-
-    public void setXCoordinate(double XPos) {
-
-    }
-
-    public void setYCoordinate(double YPos) {
-
+        return noteType;
     }
 
     public void setDirection(String direction) {
-
+        this.noteDirection = direction;
     }
 
-    public void setInitialFrame() {
-
+    @Override
+    public void setLastFrame(int lastFrame) {
+        this.lastFrame = lastFrame;
     }
 
-    public void setLastFrame() {
+    @Override
+    public void setImg() {
+        System.out.println("Note img cannot be set");
+    }
 
+    @Override
+    public Image getImg(){
+        return img;
+    }
+    public void setVisibility(boolean visibility){
+        this.visibility = visibility;
+    }
+
+    public void draw(){
+        if (visibility){
+            img.draw(xCoordinate, yCoordinate);
+        }
+    }
+
+    public void update(){
+        if (visibility){
+            yCoordinate += speed.getYSpeed();
+        }
     }
 }
 

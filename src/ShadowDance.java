@@ -1,4 +1,5 @@
 import bagel.*;
+import ActionModules.*;
 
 /**
  * Skeleton Code for SWEN20003 Project 2, Semester 2, 2023
@@ -8,6 +9,7 @@ import bagel.*;
 public class ShadowDance extends AbstractGame  {
     private final static int WINDOW_WIDTH = 1024;
     private final static int WINDOW_HEIGHT = 768;
+    private static final double refY = 657.0;
     private final static String GAME_TITLE = "SHADOW DANCE";
     private final Image BACKGROUND_IMAGE = new Image("res/background.png");
 
