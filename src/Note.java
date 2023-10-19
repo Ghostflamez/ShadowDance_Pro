@@ -19,7 +19,11 @@ public class Note extends MovingObject{
             this.specialType = row2;
             this.initialFrame = Integer.parseInt(initialFrame);
             this.lastFrame = this.initialFrame + (int) Math.ceil(668.0/ speed.getYSpeed());
-            this.img = new Image("res/note" + this.specialType + ".png");
+            if (this.specialType.equals("DoubleScore")) {
+                this.img = new Image("res/note2x.png");
+            } else {
+                this.img = new Image("res/note" + this.specialType + ".png");
+            }
         } else if (row2.equals("Hold")){
             this.noteDirection = row1;
             this.initialFrame = Integer.parseInt(initialFrame);

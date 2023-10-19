@@ -35,6 +35,15 @@ public class LaneSet {
         return level;
     }
 
+    public List<Lane> getLaneSet() {
+        return laneSet;
+    }
+
+    public void draw() {
+        for (Lane lane : laneSet) {
+            lane.draw();
+        }
+    }
     // Additional methods and attributes can be added as required
 
 }

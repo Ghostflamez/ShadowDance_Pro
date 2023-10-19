@@ -29,9 +29,13 @@ public class Lane extends StaticObject{
     }
     @Override
     public void setImg(){
-        this.img = new Image("res/lane" + getLaneType() + ".png");
+        this.img = new Image("res/lane" + this.getLaneType() + ".png");
     };
     @Override
     public Image getImg(){return img;}
+
+    public void draw() {
+        this.img.draw(this.xCoordinate, yCoordinate);
+    }
 
 }

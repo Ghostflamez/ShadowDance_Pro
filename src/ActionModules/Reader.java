@@ -4,9 +4,9 @@ import java.util.*;
 
 
 public class Reader {
-    private static final String FILEPATH1 = "/res/level1.csv";
-    private static final String FILEPATH2 = "/res/level2.csv";
-    private static final String FILEPATH3 = "/res/level3.csv";
+    private static final String FILEPATH1 = "res/level1.csv";
+    private static final String FILEPATH2 = "res/level2.csv";
+    private static final String FILEPATH3 = "res/level3.csv";
     private List<List<String>> laneList1 = new ArrayList<>();
     private List<List<String>> laneList2 = new ArrayList<>();
     private List<List<String>> laneList3 = new ArrayList<>();
@@ -15,7 +15,7 @@ public class Reader {
     private List<List<String>> noteList3 = new ArrayList<>();
 
     // Methods
-    public void Reader() {
+    public  Reader() {
         read(1);
         read(2);
         read(3);

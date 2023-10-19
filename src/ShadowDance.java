@@ -2,6 +2,7 @@ import bagel.*;
 import ActionModules.*;
 
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Skeleton Code for SWEN20003 Project 2, Semester 2, 2023
@@ -48,6 +49,9 @@ public class ShadowDance extends AbstractGame  {
     private boolean isPaused = false;
     private String gameState = "Start";
 
+    // counters
+    private int currentFrame = 0;
+    private int score = 0;
     public ShadowDance(){
         super(WINDOW_WIDTH, WINDOW_HEIGHT, GAME_TITLE);
         this.readCSV();
@@ -130,8 +134,32 @@ public class ShadowDance extends AbstractGame  {
         }
     }
     private void drawGameInterface(int level, Input input) {
-        Message test = new Message(80, Integer.toString(level), 150.0, 280.0);
+        ++this.currentFrame;
+        Message test = new Message(20, "Level "+Integer.toString(level), 17.0, 28.0);
+        Message currentFrame = new Message(10, "Frame "+Integer.toString(this.currentFrame), 940.0, 18.0);
+        Message score = new Message(30, "Score "+this.score, 17.0, 68.0);
         test.draw();
+        currentFrame.draw();
+        score.draw();
+        switch (level) {
+            case 1:
+                this.laneSet1.draw();
+
+
+                break;
+            case 2:
+                this.laneSet2.draw();
+
+                break;
+            case 3:
+                this.laneSet3.draw();
+
+                break;
+        }
+
+
+
+
     }
 
     private void drawWiningInterface() {
