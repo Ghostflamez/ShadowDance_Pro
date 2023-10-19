@@ -9,21 +9,20 @@ public class Message {
     private double xCoordinate;
     private double yCoordinate;
 
-    private DrawOptions colour = (new DrawOptions()).setBlendColour(1.0, 1.0, 1.0);
+    private static final DrawOptions colour = (new DrawOptions()).setBlendColour(1.0, 1.0, 1.0);
 
 
     // Constructors
-    public Message(int fontSize, String text, double xCoordinate, double yCoordinate, double[] colour) {
+    public Message(int fontSize, String text, double xCoordinate, double yCoordinate) {
         this.fontSize = fontSize;
-        this.fontOptions = new Font(this.font, fontSize);
         this.text = text;
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
-        this.colour = (new DrawOptions()).setBlendColour(colour[0], colour[1], colour[2]);
+        this.fontOptions = new Font(font, this.fontSize);
     }
 
     // Methods
     public void draw() {
-        this.fontOptions.drawString(this.text, this.xCoordinate, this.yCoordinate, this.colour);
+        this.fontOptions.drawString(this.text, this.xCoordinate, this.yCoordinate, colour);
     }
 }

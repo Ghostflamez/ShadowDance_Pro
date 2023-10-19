@@ -1,4 +1,4 @@
-、package ActionModules;
+package ActionModules;
 import bagel.*;
 
 public class Player {

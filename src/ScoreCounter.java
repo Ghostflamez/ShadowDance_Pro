@@ -13,7 +13,7 @@ public class ScoreCounter extends Message{
 
     // Constructors
     public ScoreCounter(int fontSize, String text, double xCoordinate, double yCoordinate, double[] colour) {
-        super(fontSize, text, xCoordinate, yCoordinate, colour);
+        super(fontSize, text, xCoordinate, yCoordinate);
     }
     // Methods
 
