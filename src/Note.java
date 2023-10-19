@@ -2,23 +2,24 @@ import bagel.*;
 public class Note extends MovingObject{
 
     private Image img;
-    private double xCoordinate;
-    private double yCoordinate = 100.0;
-    private Speed speed = new Speed(0,2.0);
+    private double yCoordinate;
+    private Speed speed = new Speed(0,2.0); //default speed
     private String noteDirection;
     private int initialFrame;
     private int lastFrame;
-    public String noteType = "Normal";
+    public String noteType;
     private String specialType;
 
     private boolean visibility = true;
 
     //constructor
-    public Note (String row1, String row2, String initialFrame){
+    public Note (String row1, String row2, String frame){
         if (row1.equals("Special")){
             this.specialType = row2;
-            this.initialFrame = Integer.parseInt(initialFrame);
-            this.lastFrame = this.initialFrame + (int) Math.ceil(668.0/ speed.getYSpeed());
+            this.initialFrame = Integer.parseInt(frame);
+            this.noteType = "Special";
+            this.yCoordinate = 100.0;
+            this.lastFrame = this.initialFrame + (int) Math.ceil(668.0/ speed.getYSpeed()); //default last frame
             if (this.specialType.equals("DoubleScore")) {
                 this.img = new Image("res/note2x.png");
             } else {
@@ -26,24 +27,38 @@ public class Note extends MovingObject{
             }
         } else if (row2.equals("Hold")){
             this.noteDirection = row1;
-            this.initialFrame = Integer.parseInt(initialFrame);
-            this.lastFrame = this.initialFrame + (int) Math.ceil(826.0/ speed.getYSpeed());
+            this.initialFrame = Integer.parseInt(frame);
+            this.noteType = "Hold";
+            this.yCoordinate = 24.0;
+            this.lastFrame = this.initialFrame + (int) Math.ceil(826.0/ speed.getYSpeed()); //default last frame for hold note
             this.img = new Image("res/holdNote" + this.noteDirection + ".png");
         } else if (row2.equals("Normal")){
-                this.noteDirection = row1;
-                this.initialFrame = Integer.parseInt(initialFrame);
-                this.lastFrame = this.initialFrame + (int) Math.ceil(668.0/ speed.getYSpeed());
-                this.img = new Image("res/note" + this.noteDirection + ".png");
+            this.noteDirection = row1;
+            this.initialFrame = Integer.parseInt(frame);
+            this.noteType = "Normal";
+            this.yCoordinate = 100.0;
+            this.lastFrame = this.initialFrame + (int) Math.ceil(668.0/ speed.getYSpeed()); //default last frame
+            this.img = new Image("res/note" + this.noteDirection + ".png");
+
         } else if(row2.equals("Bomb")){
-                this.specialType = row2;
-                this.noteDirection = row1;
-                this.initialFrame = Integer.parseInt(initialFrame);
-                this.lastFrame = this.initialFrame + (int) Math.ceil(668.0/ speed.getYSpeed());
-                this.img = new Image("res/note" + this.specialType + ".png");
+            this.specialType = row2;
+            this.noteDirection = row1;
+            this.initialFrame = Integer.parseInt(frame);
+            this.noteType = "Normal";
+            this.yCoordinate = 100.0;
+            this.lastFrame = this.initialFrame + (int) Math.ceil(668.0/ speed.getYSpeed()); //default last frame
+            this.img = new Image("res/noteBomb.png");
         }
 
     }
     //methods
+    public int getInitialFrame() {
+        return initialFrame;
+    }
+
+    public int getLastFrame() {
+        return lastFrame;
+    }
 
     public String getDirection() {
         return noteDirection;
@@ -72,20 +87,20 @@ public class Note extends MovingObject{
     public Image getImg(){
         return img;
     }
-    public void setVisibility(boolean visibility){
-        this.visibility = visibility;
+
+    public void draw(double x){
+        img.draw(x, this.yCoordinate);
     }
 
     public void draw(){
-        if (visibility){
-            img.draw(xCoordinate, yCoordinate);
-        }
+        img.draw(500.0, this.yCoordinate);
+    }
+    public void update(String command){
+
     }
 
-    public void update(){
-        if (visibility){
-            yCoordinate += speed.getYSpeed();
-        }
+    public void updateCoordinate(int frame){
+        this.yCoordinate += speed.getYSpeed();
     }
 }
 

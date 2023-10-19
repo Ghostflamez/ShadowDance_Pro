@@ -3,12 +3,12 @@ import bagel.Image;
 public class BombNote extends Note{
     private Image img;
     private double xCoordinate;
-    private double yCoordinate = 100.0;
+    private double yCoordinate;
     private Speed speed = new Speed(0,2.0);
     private String noteDirection;
     private int initialFrame;
     private int lastFrame;
-    public String noteType = "Normal";
+    public String noteType;
     private String specialType;
 
     private boolean visibility = true;

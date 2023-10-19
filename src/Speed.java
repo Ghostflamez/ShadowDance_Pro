@@ -34,8 +34,4 @@ public class Speed {
         this.ySpeed = ySpeed;
     }
 
-    public void changeSpeed(int multiplier) {
-        this.xSpeed *= multiplier;
-        this.ySpeed *= multiplier;
-    }
 }

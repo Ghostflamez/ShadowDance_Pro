@@ -1,6 +1,7 @@
 import bagel.*;
 import ActionModules.*;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -23,6 +24,10 @@ public class ShadowDance extends AbstractGame  {
     private NoteSet noteSet1;
     private NoteSet noteSet2;
     private NoteSet noteSet3;
+
+    private CurrentNote currentNote1;
+    private CurrentNote currentNote2;
+    private CurrentNote currentNote3;
 
     // key input states
     public enum KeyState {
@@ -68,6 +73,10 @@ public class ShadowDance extends AbstractGame  {
         this.noteSet1 = new NoteSet(1);
         this.noteSet2 = new NoteSet(2);
         this.noteSet3 = new NoteSet(3);
+
+        this.currentNote1 = new CurrentNote(this.noteSet1);
+        this.currentNote2 = new CurrentNote(this.noteSet2);
+        this.currentNote3 = new CurrentNote(this.noteSet3);
     }
 
     /**
@@ -133,27 +142,74 @@ public class ShadowDance extends AbstractGame  {
             this.gameState = "Level 3";
         }
     }
+
+
     private void drawGameInterface(int level, Input input) {
         ++this.currentFrame;
-        Message test = new Message(20, "Level "+Integer.toString(level), 17.0, 28.0);
-        Message currentFrame = new Message(10, "Frame "+Integer.toString(this.currentFrame), 940.0, 18.0);
-        Message score = new Message(30, "Score "+this.score, 17.0, 68.0);
+        Message test = new Message(20, "Level "+Integer.toString(level), 17.0, 748.0);
+        Message frame = new Message(10, "Frame "+Integer.toString(this.currentFrame), 940.0, 18.0);
+        Message score = new Message(30, "Score "+this.score, 35.0, 35.0);
         test.draw();
-        currentFrame.draw();
+        frame.draw();
         score.draw();
+
+
+
+
+
+
+
         switch (level) {
             case 1:
                 this.laneSet1.draw();
+//                CurrentNote currentNote1 = new CurrentNote(this.noteSet1);
+//                currentNote1.update(input, this.currentFrame);
+//                currentNote1.draw();
+                    List<Note> current1 = new ArrayList<>();
 
+                    for (Note note : this.currentNote1.getOriginalNotes().getNotes()) {
+                        if (note.getInitialFrame() < currentFrame && currentFrame < note.getLastFrame()) {
+                            current1.add(note);
+                        }
+                    }
 
+                    NoteSet q1 = new NoteSet(current1);
+                    q1.update(input, this.currentFrame);
+                    q1.draw(1);
+                    Image img = new Image("res/note2x.png");
+                    img.draw(100,100);
                 break;
             case 2:
                 this.laneSet2.draw();
+//                CurrentNote currentNote2 = new CurrentNote(this.noteSet2);
+//                currentNote2.update(input, this.currentFrame);
+                List<Note> current2 = new ArrayList<>();
 
+                for (Note note : this.currentNote2.getOriginalNotes().getNotes()) {
+                    if (note.getInitialFrame() < currentFrame && currentFrame < note.getLastFrame()) {
+                        current2.add(note);
+                    }
+                }
+
+                NoteSet q2 = new NoteSet(current2);
+                q2.update(input, this.currentFrame);
+                q2.draw(2);
                 break;
             case 3:
                 this.laneSet3.draw();
+//                CurrentNote currentNote3 = new CurrentNote(this.noteSet3);
+//                currentNote3.update(input, this.currentFrame);
+                List<Note> current3 = new ArrayList<>();
 
+                for (Note note : this.currentNote3.getOriginalNotes().getNotes()) {
+                    if (note.getInitialFrame() < currentFrame && currentFrame < note.getLastFrame()) {
+                        current3.add(note);
+                    }
+                }
+
+                NoteSet q3 = new NoteSet(current3);
+                q3.update(input, this.currentFrame);
+                q3.draw(3);
                 break;
         }
 

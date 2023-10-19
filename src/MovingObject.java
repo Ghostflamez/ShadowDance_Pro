@@ -41,6 +41,14 @@ public abstract class MovingObject extends StaticObject{
     public abstract void setImg();
     public abstract Image getImg();
 
+    public void setXCoordinate(double xCoordinate) {
+        this.xCoordinate = xCoordinate;
+    }
+
+    public void setYCoordinate(double yCoordinate) {
+        this.yCoordinate = yCoordinate;
+    }
+
 
 
 }
