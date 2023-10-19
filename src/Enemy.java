@@ -1,3 +1,7 @@
+import bagel.Image;
+
+import java.lang.reflect.Array;
+
 public class Enemy extends MovingObject {
 
     // Attributes
@@ -29,12 +33,27 @@ public class Enemy extends MovingObject {
     // Methods related to speed
     public void setSpeed(double xPos) {
         // Assume a method in Speed class that sets speed based on xPos
-        speed.setSpeed(xPos);
+        speed.setSpeed(xPos,0);
     }
 
-    public Array getSpeed() {  // The return type is Array, but you may want to replace Array with an actual type
+    public Speed getSpeed() {  // The return type is Array, but you may want to replace Array with an actual type
         // Assume a method in Speed class that gets speed
-        return speed.getSpeed();
+        return this.speed;
+    }
+
+    @Override
+    public void setLastFrame(int lastFrame) {
+
+    }
+
+    @Override
+    public void setImg() {
+
+    }
+
+    @Override
+    public Image getImg() {
+        return null;
     }
 
     // Static block or constructor to initialize FILEPATH

@@ -1,3 +1,5 @@
+import bagel.Image;
+
 public class Guardian extends StaticObject{
     // Attributes
     public String FILEPATH;
@@ -12,4 +14,13 @@ public class Guardian extends StaticObject{
         // Implement the render logic
     }
 
+    @Override
+    public void setImg() {
+
+    }
+
+    @Override
+    public Image getImg() {
+        return null;
+    }
 }

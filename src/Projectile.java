@@ -1,73 +1,89 @@
+import bagel.Image;
+
 public class Projectile extends MovingObject{
-    public class Projectile {
+    @Override
+    public void setLastFrame(int lastFrame) {
+
+    }
+
+    @Override
+    public void setImg() {
+
+    }
+
+    @Override
+    public Image getImg() {
+        return null;
+    }
 
 
-        public static final String FILEPATH = "";  // 注意: 这里只给了一个默认空字符串，具体值应根据实际需求给出
-        private double xCoordinate;
-        private double yCoordinate;
-        private Speed speed;
-        private double angle;
-        private int initialFrame;
-        private int lastFrame;
+
+    public static final String FILEPATH = "";  // 注意: 这里只给了一个默认空字符串，具体值应根据实际需求给出
+    private double xCoordinate;
+    private double yCoordinate;
+    private Speed speed;
+    private double angle;
+    private int initialFrame;
+    private int lastFrame;
 
 
-        public Projectile() {
+    public Projectile() {
 
-        }
+    }
 
 
-        public void setAngle(Enemy enemy, Guardian guardian) {
+    public void setAngle(Enemy enemy, Guardian guardian) {
 
-        }
+    }
 
-        public void setSpeed(Speed speed) {
-            this.speed = speed;
+    public void setSpeed(Speed speed) {
+        this.speed = speed;
 
-        }
+    }
 
-        public Object[] getSpeed() {
+    public Speed getSpeed() {
 
-            return null;
-        }
+        return null;
+    }
 
-        public void update() {
+    public void update() {
 
-        }
+    }
 
-        public double getXCoordinate() {
-            return xCoordinate;
-        }
+    public double getXCoordinate() {
+        return xCoordinate;
+    }
 
-        public double getYCoordinate() {
-            return yCoordinate;
-        }
+    public double getYCoordinate() {
+        return yCoordinate;
+    }
 
-        public int getInitialFrame() {
-            return initialFrame;
-        }
+    public int getInitialFrame() {
+        return initialFrame;
+    }
 
-        public int getLastFrame() {
-            return lastFrame;
-        }
+    public int getLastFrame() {
+        return lastFrame;
+    }
 
-        public void setXCoordinate(Play keyInput) {
+    public void setXCoordinate() {
 
-        }
+    }
 
-        public void setYCoordinate() {
+    public void setYCoordinate() {
 
-        }
+    }
 
-        public void setInitialFrame() {
+    public void setInitialFrame() {
 
-        }
+    }
 
-        public void setLastFrame() {
+    public void setLastFrame() {
 
-        }
+    }
 
-        public void rotation(double angle) {
+    public void rotation(double angle) {
 
-        }
     }
 }
+

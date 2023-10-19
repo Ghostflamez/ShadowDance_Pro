@@ -19,6 +19,9 @@ public class NoteSet {
             this.addNote(newNote);
         }
     }
+    public NoteSet(){
+        this.notes = new ArrayList<>();
+    }
 
     public void addNote(Note note) {
         notes.add(note);

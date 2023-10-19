@@ -21,6 +21,10 @@ public class LaneSet {
         }
     }
 
+    public LaneSet(){
+        this.laneSet = new ArrayList<>();
+    }
+
 
     // Methods
     public void addLane(Lane lane) {
