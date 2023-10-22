@@ -1,14 +1,18 @@
 import bagel.*;
 public class Note extends MovingObject{
 
+    protected static final double refY = 657.0;
     private Image img;
     private double yCoordinate;
+    private double xCoordinate;
+    private double initialyCoordinate;
     private Speed speed = new Speed(0,2.0); //default speed
     private String noteDirection;
     private int initialFrame;
     private int lastFrame;
     public String noteType;
     private String specialType;
+
 
     private boolean visibility = true;
 
@@ -18,6 +22,7 @@ public class Note extends MovingObject{
             this.specialType = row2;
             this.initialFrame = Integer.parseInt(frame);
             this.noteType = "Special";
+            this.initialyCoordinate = 100.0;
             this.yCoordinate = 100.0;
             this.lastFrame = this.initialFrame + (int) Math.ceil(668.0/ speed.getYSpeed()); //default last frame
             if (this.specialType.equals("DoubleScore")) {
@@ -29,6 +34,7 @@ public class Note extends MovingObject{
             this.noteDirection = row1;
             this.initialFrame = Integer.parseInt(frame);
             this.noteType = "Hold";
+            this.initialyCoordinate = 24.0;
             this.yCoordinate = 24.0;
             this.lastFrame = this.initialFrame + (int) Math.ceil(826.0/ speed.getYSpeed()); //default last frame for hold note
             this.img = new Image("res/holdNote" + this.noteDirection + ".png");
@@ -36,6 +42,7 @@ public class Note extends MovingObject{
             this.noteDirection = row1;
             this.initialFrame = Integer.parseInt(frame);
             this.noteType = "Normal";
+            this.initialyCoordinate = 100.0;
             this.yCoordinate = 100.0;
             this.lastFrame = this.initialFrame + (int) Math.ceil(668.0/ speed.getYSpeed()); //default last frame
             this.img = new Image("res/note" + this.noteDirection + ".png");
@@ -45,6 +52,7 @@ public class Note extends MovingObject{
             this.noteDirection = row1;
             this.initialFrame = Integer.parseInt(frame);
             this.noteType = "Normal";
+            this.initialyCoordinate = 100.0;
             this.yCoordinate = 100.0;
             this.lastFrame = this.initialFrame + (int) Math.ceil(668.0/ speed.getYSpeed()); //default last frame
             this.img = new Image("res/noteBomb.png");
@@ -69,6 +77,10 @@ public class Note extends MovingObject{
         return noteType;
     }
 
+    public String getSpecialType() {
+        return specialType;
+    }
+
     public void setDirection(String direction) {
         this.noteDirection = direction;
     }
@@ -88,20 +100,76 @@ public class Note extends MovingObject{
         return img;
     }
 
-    public void draw(double x){
-        img.draw(x, this.yCoordinate);
-    }
+
 
     public void draw(){
-        img.draw(500.0, this.yCoordinate);
+        img.draw(this.xCoordinate, this.yCoordinate);
     }
     public void update(String command){
-
+        switch (command){
+            case "SpeedUp":
+                this.speed.speedUp();
+                break;
+            case "SpeedDown":
+                this.speed.speedDown();
+                break;
+        }
     }
 
     public void updateCoordinate(int frame){
-        this.yCoordinate += speed.getYSpeed();
+        this.yCoordinate = this.initialyCoordinate + speed.getYSpeed() * (frame - this.initialFrame);
     }
+    public void setXCoordinate(double xCoordinate) {
+        this.xCoordinate = xCoordinate;
+    }
+
+    public void setYCoordinate(double yCoordinate) {
+        this.yCoordinate = yCoordinate;
+    }
+
+    public double getXCoordinate() {
+        return xCoordinate;
+    }
+
+    public double getYCoordinate() {
+        return yCoordinate;
+    }
+
+    public void setSpeed(Speed speed) {
+        this.speed = speed;
+    }
+
+    public int getScore() {
+        double distance = Math.abs(this.yCoordinate - refY);
+        if (distance <= 15) {
+            return 10; // PERFECT
+        } else if (distance <= 50) {
+            return 5; // GOOD
+        } else if (distance <= 100) {
+            return -1; // BAD
+        } else if (distance <= 200) {
+            return -5; // MISS
+        } else {
+            return 0; // 或其他默认得分
+        }
+    }
+
+    public String getMark() {
+        double distance = Math.abs(this.yCoordinate - refY);
+        if (distance <= 15) {
+            return  "PERFECT";
+        } else if (distance <= 50) {
+            return "GOOD";
+        } else if (distance <= 100) {
+            return "BAD";
+        } else if (distance <= 200) {
+            return "MISS";
+        } else {
+            return "";
+        }
+    }
+
+
 }
 
 

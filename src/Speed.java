@@ -34,4 +34,16 @@ public class Speed {
         this.ySpeed = ySpeed;
     }
 
+    public void speedUp() {
+        // Set currentSpeed value
+        this.xSpeed = this.xSpeed * 2;
+        this.ySpeed = this.ySpeed * 2;
+    }
+
+    public void speedDown() {
+        // Set currentSpeed value
+        this.xSpeed = this.xSpeed / 2;
+        this.ySpeed = this.ySpeed / 2;
+    }
+
 }

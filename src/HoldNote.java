@@ -2,6 +2,7 @@ import bagel.*;
 public class HoldNote extends Note{
 
     // Attributes
+    private static final double refY = 657.0;
     public static final double length = 82.0*2.0;
     private Image img;
 
@@ -18,4 +19,6 @@ public class HoldNote extends Note{
         super(row1, row2, initialFrame);
     }
     // Methods
+
+
 }

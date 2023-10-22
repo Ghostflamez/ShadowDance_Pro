@@ -38,4 +38,6 @@ public class Lane extends StaticObject{
         this.img.draw(this.xCoordinate, yCoordinate);
     }
 
+
+
 }

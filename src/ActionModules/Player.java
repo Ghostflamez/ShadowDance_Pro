@@ -2,138 +2,144 @@ package ActionModules;
 import bagel.*;
 
 public class Player {
-    private Input input;
 
-    // Enum for key states
-    public enum KeyState {
-        PRESS,  // Key was pressed this frame
-        HOLD,   // Key was pressed in previous frames
-        RELEASE,  // Key was released this frame
-        FREE    // Key was released in previous frames
-    }
+    private boolean upPressed = false;
+    private boolean downPressed = false;
+    private boolean leftPressed = false;
+    private boolean rightPressed = false;
+    private boolean spacePressed = false;
 
-    // Key states for each key
-    private KeyState upKeyState = KeyState.FREE;
-    private KeyState downKeyState = KeyState.FREE;
-    private KeyState leftKeyState = KeyState.FREE;
-    private KeyState rightKeyState = KeyState.FREE;
-    private KeyState spaceKeyState = KeyState.FREE;
-
-    private boolean upWasReleased = false;
-    private boolean downWasReleased = false;
-    private boolean leftWasReleased = false;
-    private boolean rightWasReleased = false;
-    private boolean spaceWasReleased = false;
+    private boolean upReleased = false;
+    private boolean downReleased = false;
+    private boolean leftReleased = false;
+    private boolean rightReleased = false;
+    private boolean spaceReleased = false;
 
     // Constructor
-    public Player(Input input) {
-        this.input = input;
+    public Player() {
+
     }
 
     // Methods
-    public boolean isEscPressed() {
-        return input.isDown(Keys.ESCAPE);
+    public void update(Input input) {
+        if (input.wasPressed(Keys.LEFT)) {
+            leftPressed = true;
+        }
+        if (input.wasPressed(Keys.RIGHT)) {
+            rightPressed = true;
+        }
+        if (input.wasPressed(Keys.UP)) {
+            // 设置按下标志
+            upPressed = true;
+        }
+        if (input.wasPressed(Keys.DOWN)) {
+            downPressed = true;
+        }
+        if (input.wasPressed(Keys.SPACE)) {
+            spacePressed = true;
+        }
+
+        //detect keyboard release
+        if (input.wasReleased(Keys.LEFT)) {
+            leftReleased = true;
+        }
+        if (input.wasReleased(Keys.RIGHT)) {
+            rightReleased = true;
+        }
+        if (input.wasReleased(Keys.UP)) {
+            upReleased = true;
+        }
+        if (input.wasReleased(Keys.DOWN)) {
+            downReleased = true;
+        }
+        if (input.wasReleased(Keys.SPACE)) {
+            spaceReleased = true;
+        }
+
     }
 
+    // Setters
+    public void resetUpPressed() {
+        this.upPressed = false;
+    }
+
+    public void resetDownPressed() {
+        this.downPressed = false;
+    }
+
+    public void resetLeftPressed() {
+        this.leftPressed = false;
+    }
+
+    public void resetRightPressed() {
+        this.rightPressed = false;
+    }
+
+    public void resetSpacePressed() {
+        this.spacePressed = false;
+    }
+
+    public void resetUpReleased() {
+        this.upReleased = false;
+    }
+
+    public void resetDownReleased() {
+        this.downReleased = false;
+    }
+
+    public void resetLeftReleased() {
+        this.leftReleased = false;
+    }
+
+    public void resetRightReleased() {
+        this.rightReleased = false;
+    }
+
+    public void resetSpaceReleased() {
+        this.spaceReleased = false;
+    }
+
+    // Getters
     public boolean isUpPressed() {
-        return upKeyState == KeyState.PRESS;
-    }
-
-    public boolean isUpHeld() {
-        return upKeyState == KeyState.PRESS || upKeyState == KeyState.HOLD;
+        return upPressed;
     }
 
     public boolean isDownPressed() {
-        return downKeyState == KeyState.PRESS;
-    }
-
-    public boolean isDownHeld() {
-        return downKeyState == KeyState.PRESS || downKeyState == KeyState.HOLD;
+        return downPressed;
     }
 
     public boolean isLeftPressed() {
-        return leftKeyState == KeyState.PRESS;
-    }
-
-    public boolean isLeftHeld() {
-        return leftKeyState == KeyState.PRESS || leftKeyState == KeyState.HOLD;
+        return leftPressed;
     }
 
     public boolean isRightPressed() {
-        return rightKeyState == KeyState.PRESS;
-    }
-
-    public boolean isRightHeld() {
-        return rightKeyState == KeyState.PRESS || rightKeyState == KeyState.HOLD;
+        return rightPressed;
     }
 
     public boolean isSpacePressed() {
-        return spaceKeyState == KeyState.PRESS;
+        return spacePressed;
     }
 
-    public boolean isSpaceHeld() {
-        return spaceKeyState == KeyState.PRESS || spaceKeyState == KeyState.HOLD;
+    public boolean isUpReleased() {
+        return upReleased;
     }
 
-    public void update() {
-        if (input.isDown(Keys.UP)) {
-            if (upWasReleased) {
-                upKeyState = KeyState.PRESS;
-                upWasReleased = false;
-            } else if (upKeyState == KeyState.PRESS) {
-                upKeyState = KeyState.HOLD;
-            }
-        } else if (upKeyState != KeyState.FREE) {
-            upKeyState = KeyState.RELEASE;
-            upWasReleased = true;
-        }
-
-        if (input.isDown(Keys.DOWN)) {
-            if (downWasReleased) {
-                downKeyState = KeyState.PRESS;
-                downWasReleased = false;
-            } else if (downKeyState == KeyState.PRESS) {
-                downKeyState = KeyState.HOLD;
-            }
-        } else if (downKeyState != KeyState.FREE) {
-            downKeyState = KeyState.RELEASE;
-            downWasReleased = true;
-        }
-
-        if (input.isDown(Keys.LEFT)) {
-            if (leftWasReleased) {
-                leftKeyState = KeyState.PRESS;
-                leftWasReleased = false;
-            } else if (leftKeyState == KeyState.PRESS) {
-                leftKeyState = KeyState.HOLD;
-            }
-        } else if (leftKeyState != KeyState.FREE) {
-            leftKeyState = KeyState.RELEASE;
-            leftWasReleased = true;
-        }
-
-        if (input.isDown(Keys.RIGHT)) {
-            if (rightWasReleased) {
-                rightKeyState = KeyState.PRESS;
-                rightWasReleased = false;
-            } else if (rightKeyState == KeyState.PRESS) {
-                rightKeyState = KeyState.HOLD;
-            }
-        } else if (rightKeyState != KeyState.FREE) {
-            rightKeyState = KeyState.RELEASE;
-            rightWasReleased = true;
-        }
-
-        if (input.isDown(Keys.SPACE)) {
-            if (spaceWasReleased) {
-                spaceKeyState = KeyState.PRESS;
-                spaceWasReleased = false;
-            } else if (spaceKeyState == KeyState.PRESS) {
-                spaceKeyState = KeyState.HOLD;
-            }
-        } else if (spaceKeyState != KeyState.FREE) {
-            spaceKeyState = KeyState.RELEASE;
-            spaceWasReleased = true;
-        }
+    public boolean isDownReleased() {
+        return downReleased;
     }
+
+    public boolean isLeftReleased() {
+        return leftReleased;
+    }
+
+    public boolean isRightReleased() {
+        return rightReleased;
+    }
+
+    public boolean isSpaceReleased() {
+        return spaceReleased;
+    }
+
+
+
 }

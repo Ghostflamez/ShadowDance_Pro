@@ -7,6 +7,7 @@ import java.util.List;
 public class NoteSet {
     private List<Note> notes;
 
+
     // Constructors
     public NoteSet(int level) {
         this.notes = new ArrayList<>();
@@ -21,25 +22,6 @@ public class NoteSet {
             Note newNote = NoteFactory.createNote(noteRow.get(0), noteRow.get(1), noteRow.get(2));
             this.addNote(newNote);
         }
-    }
-
-    public NoteSet(List<Note> notes){
-        this.notes = notes;
-    }
-    public NoteSet(){
-        this.notes = new ArrayList<>();
-    }
-
-    // Methods
-    public void addNote(Note note) {
-        notes.add(note);
-    }
-
-    public List<Note> getNotes() {
-        return notes;
-    }
-
-    public void draw(int level) {
 
         double specialX = 500.0;
         double upX = 500.0;
@@ -65,19 +47,50 @@ public class NoteSet {
 
         for (Note note : this.notes) {
             if ("Special".equals(note.getType())) {
-                note.draw(specialX);
+                note.setXCoordinate(specialX);
             } else {
                 if ("Up".equals(note.getDirection())) {
-                    note.draw(upX);
+                    note.setXCoordinate(upX);
                 } else if ("Down".equals(note.getDirection())) {
-                    note.draw(downX);
+                    note.setXCoordinate(downX);
                 } else if ("Left".equals(note.getDirection())) {
-                    note.draw(leftX);
+                    note.setXCoordinate(leftX);
                 } else if ("Right".equals(note.getDirection())) {
-                    note.draw(rightX);
+                    note.setXCoordinate(rightX);
                 }
             }
         }
+    }
+
+    public NoteSet(List<Note> notes){
+        this.notes = notes;
+    }
+    public NoteSet(){
+        this.notes = new ArrayList<>();
+    }
+
+    // Methods
+    public void addNote(Note note) {
+        notes.add(note);
+    }
+
+    public List<Note> getNotes() {
+        return notes;
+    }
+
+    public List<Note> getNotes(String type) {
+        List<Note> notesByDirection = new ArrayList<>();
+        for (Note note : this.notes) {
+            if (note.getDirection().equals(type)) {
+                notesByDirection.add(note);
+            }
+        }
+        return notesByDirection;
+    }
+
+    public void draw(int level) {
+
+
     }
 
     public void draw() {
@@ -99,16 +112,10 @@ public class NoteSet {
         }
     }
 
-    public List<Note> select(int frame) {
-        List<Note> current = new ArrayList<>();
-
-        for (Note note : this.notes) {
-            if (note.getInitialFrame() < frame && frame < note.getLastFrame()) {
-                current.add(note);
-            }
-        }
-
-        return current;
+    public void wipe(){
+        this.notes = new ArrayList<>();
     }
+
+
 
 }

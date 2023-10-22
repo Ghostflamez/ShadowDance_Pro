@@ -17,6 +17,16 @@ public class BombNote extends Note{
     public BombNote (String row1, String row2, String initialFrame){
         super(row1, row2, initialFrame);
     }
+
+    // Methods
+    public boolean isTriggered() {
+        double distance = Math.abs(this.yCoordinate - refY);
+        if (distance <= 200) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 
