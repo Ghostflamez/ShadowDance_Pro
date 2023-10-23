@@ -8,12 +8,14 @@ public class Player {
     private boolean leftPressed = false;
     private boolean rightPressed = false;
     private boolean spacePressed = false;
+    private boolean leftShiftPressed = false;
 
     private boolean upReleased = false;
     private boolean downReleased = false;
     private boolean leftReleased = false;
     private boolean rightReleased = false;
     private boolean spaceReleased = false;
+    private boolean leftShiftReleased = false;
 
     // Constructor
     public Player() {
@@ -38,6 +40,9 @@ public class Player {
         if (input.wasPressed(Keys.SPACE)) {
             spacePressed = true;
         }
+        if (input.wasPressed(Keys.LEFT_SHIFT)) {
+            leftShiftPressed = true;
+        }
 
         //detect keyboard release
         if (input.wasReleased(Keys.LEFT)) {
@@ -55,10 +60,13 @@ public class Player {
         if (input.wasReleased(Keys.SPACE)) {
             spaceReleased = true;
         }
+        if (input.wasReleased(Keys.LEFT_SHIFT)) {
+            leftShiftReleased = true;
+        }
 
     }
 
-    // Setters
+    // Setters for press
     public void resetUpPressed() {
         this.upPressed = false;
     }
@@ -79,6 +87,11 @@ public class Player {
         this.spacePressed = false;
     }
 
+    public void resetLeftShiftPressed() {
+        this.leftShiftPressed = false;
+    }
+
+    // Setters for release
     public void resetUpReleased() {
         this.upReleased = false;
     }
@@ -99,7 +112,11 @@ public class Player {
         this.spaceReleased = false;
     }
 
-    // Getters
+    public void resetLeftShiftReleased() {
+        this.leftShiftReleased = false;
+    }
+
+    // Getters for press
     public boolean isUpPressed() {
         return upPressed;
     }
@@ -120,6 +137,11 @@ public class Player {
         return spacePressed;
     }
 
+    public boolean isLeftShiftPressed() {
+        return leftShiftPressed;
+    }
+
+    // Getters for release
     public boolean isUpReleased() {
         return upReleased;
     }
@@ -138,6 +160,10 @@ public class Player {
 
     public boolean isSpaceReleased() {
         return spaceReleased;
+    }
+
+    public boolean isLeftShiftReleased() {
+        return leftShiftReleased;
     }
 
 

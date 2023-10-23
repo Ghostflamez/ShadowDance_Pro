@@ -1,89 +1,62 @@
+import bagel.DrawOptions;
 import bagel.Image;
 
-public class Projectile extends MovingObject{
-    @Override
-    public void setLastFrame(int lastFrame) {
+import java.util.List;
 
-    }
+public class Projectile{
 
-    @Override
-    public void setImg() {
-
-    }
-
-    @Override
-    public Image getImg() {
-        return null;
-    }
-
-
-
-    public static final String FILEPATH = "";  // 注意: 这里只给了一个默认空字符串，具体值应根据实际需求给出
+    private static final double SPEED = 6.0;
+    private static final Image img = new Image("res/arrow.png");
+    private static final int xmax = 1024;
+    private static final int ymax = 768;
     private double xCoordinate;
     private double yCoordinate;
-    private Speed speed;
-    private double angle;
-    private int initialFrame;
-    private int lastFrame;
+    private double xDirection;
+    private double yDirection;
+    private double radius;
 
+    public Projectile(double startX, double startY, double endX, double endY) {
+        this.xCoordinate = startX;
+        this.yCoordinate = startY;
 
-    public Projectile() {
-
-    }
-
-
-    public void setAngle(Enemy enemy, Guardian guardian) {
-
-    }
-
-    public void setSpeed(Speed speed) {
-        this.speed = speed;
-
-    }
-
-    public Speed getSpeed() {
-
-        return null;
+        // culculate the direction of the projectile
+        double totalDistance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+        this.xDirection = (endX - startX) / totalDistance;
+        this.yDirection = (endY - startY) / totalDistance;
+        this.radius = Math.atan2(endY - 600.0, endX - 800.0);
     }
 
     public void update() {
+        this.xCoordinate += xDirection * SPEED;
+        this.yCoordinate += yDirection * SPEED;
 
+        double rotationAngle = Math.atan2(yDirection, xDirection); // 计算投掷物应该旋转的角度
+        img.draw(xCoordinate, yCoordinate, new DrawOptions().setRotation(radius));
     }
 
-    public double getXCoordinate() {
-        return xCoordinate;
+    public boolean hasCollidedWith(Enemy enemy) {
+        double distance = Math.sqrt(Math.pow(xCoordinate - enemy.getXCoordinate(), 2) + Math.pow(yCoordinate - enemy.getYCoordinate(), 2));
+        return distance <= 62.0;
     }
 
-    public double getYCoordinate() {
-        return yCoordinate;
+    public boolean outOfBounds() {
+        return xCoordinate < 0 || xCoordinate > xmax || yCoordinate < 0 || yCoordinate > ymax;
     }
 
-    public int getInitialFrame() {
-        return initialFrame;
+    public static Enemy findNearestEnemy(List<Enemy> enemies) {
+        Enemy nearestEnemy = null;
+        double minDistance = 1281.0;
+
+        for (Enemy enemy : enemies) {
+            double distance = Math.sqrt(Math.pow(800.0 - enemy.getXCoordinate(), 2) + Math.pow(600.0 - enemy.getYCoordinate(), 2));
+
+            if (distance < minDistance) {
+                minDistance = distance;
+                nearestEnemy = enemy;
+            }
+        }
+
+        return nearestEnemy;
     }
 
-    public int getLastFrame() {
-        return lastFrame;
-    }
-
-    public void setXCoordinate() {
-
-    }
-
-    public void setYCoordinate() {
-
-    }
-
-    public void setInitialFrame() {
-
-    }
-
-    public void setLastFrame() {
-
-    }
-
-    public void rotation(double angle) {
-
-    }
 }
-

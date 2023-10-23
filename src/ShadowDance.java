@@ -67,8 +67,9 @@ public class ShadowDance extends AbstractGame {
     private List<Note> normalNotesLeft;
     private List<Note> normalNotesRight;
 
-    // enemy
+    // enemy and projectile
     private List<Enemy> enemies = new ArrayList<>();
+    private List<Projectile> projectiles = new ArrayList<>();
 
     // counters
     private int currentFrame = 0;  // frame counter
@@ -239,7 +240,38 @@ public class ShadowDance extends AbstractGame {
             this.thisCurrentNote.getNotes().removeAll(notesToRemove);
 
             //guardian activity
+            // detect if the guardian is hit
+            if (player.isLeftShiftPressed() && !player.isSpaceReleased()) {
+                Enemy nearestEnemy = Projectile.findNearestEnemy(enemies);
+                if (nearestEnemy != null) {
+                    projectiles.add(new Projectile(800.0, 600.0, nearestEnemy.getXCoordinate(), nearestEnemy.getYCoordinate()));
+                }
+                player.resetLeftShiftPressed();
+            }
+            if (player.isLeftShiftReleased()) {
+                player.resetLeftShiftReleased();
+            }
 
+            // update projectiles
+            Iterator<Projectile> iterator = projectiles.iterator();
+            while(iterator.hasNext()) {
+                Projectile projectile = iterator.next();
+                projectile.update();
+
+                // if projectile hits an enemy, remove it
+                for (Enemy enemy : enemies) {
+                    if (projectile.hasCollidedWith(enemy)) {
+                        iterator.remove();
+                        enemies.remove(enemy);
+                        break;
+                    }
+                }
+
+                // if projectile is out of bounds, remove it
+                if (projectile.outOfBounds()) {
+                    iterator.remove();
+                }
+            }
         }
 
         // initialize lists
@@ -362,7 +394,7 @@ public class ShadowDance extends AbstractGame {
             for (BombNote note : this.bombNotesUp) {
                 if (note.isTriggered()) {
                     this.wipe = true;
-                };
+                }
             }
 
             int totalUpScore = normalUpScore + holdUpScore;
