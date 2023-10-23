@@ -176,7 +176,6 @@ public class ShadowDance extends AbstractGame {
         test.draw();
         frame.draw();
         score.draw();
-        GUARDIAN.draw(800.0, 600.0);
 
         // update current note and lane set
         switch (level) {
@@ -202,6 +201,7 @@ public class ShadowDance extends AbstractGame {
 
         if (this.currentFrame > lastNote.getLastFrame()) {
             this.gameState = "Ending";
+            this.resetGameState();
         }
 
         this.thisLaneSet.draw();
@@ -212,6 +212,7 @@ public class ShadowDance extends AbstractGame {
         if (level == 3) {
             // Enemy activity
             // initialize enemy
+            GUARDIAN.draw(800.0, 600.0);
             this.enemyFrame++;
 
             // Every 600 frames, create an enemy
@@ -394,6 +395,7 @@ public class ShadowDance extends AbstractGame {
             for (BombNote note : this.bombNotesUp) {
                 if (note.isTriggered()) {
                     this.wipe = true;
+                    this.setBanner(note.getMark());
                 }
             }
 
@@ -420,7 +422,10 @@ public class ShadowDance extends AbstractGame {
             }
 
             for (BombNote note : this.bombNotesDown) {
-                if (note.isTriggered()) this.wipe = true;
+                if (note.isTriggered()) {
+                    this.wipe = true;
+                    this.setBanner(note.getMark());
+                }
             }
 
             int totalDownScore = normalDownScore + holdDownScore;
@@ -473,7 +478,10 @@ public class ShadowDance extends AbstractGame {
             }
 
             for (BombNote note : this.bombNotesRight) {
-                if (note.isTriggered()) this.wipe = true;
+                if (note.isTriggered()) {
+                    this.wipe = true;
+                    this.setBanner(note.getMark());
+                }
             }
 
             int totalRightScore = normalRightScore + holdRightScore;
@@ -488,6 +496,7 @@ public class ShadowDance extends AbstractGame {
         if (player.isSpacePressed() && !player.isSpaceReleased()) {
             for (BombNote note : this.bombNotesSpecial) {
                 if (note.isTriggered()) this.wipe = true;
+                this.setBanner(note.getMark());
             }
             player.resetSpacePressed();
         }
@@ -597,6 +606,33 @@ public class ShadowDance extends AbstractGame {
         this.bannerFrame = 30;  // reset banner frame
     }
 
-
+    private void resetGameState() {
+        isPaused = false;
+        currentFrame = 0;
+        enemyFrame = 0;
+        enemies.clear();
+        projectiles.clear();
+        score = 0;
+        banner = "";
+        bannerFrame = 0;
+        doublescoreFrame = 0;
+        isDoubleScore = false;
+        doubleScoreBonus = 1;
+        wipe = false;
+        specialNotes.clear();
+        holdNotesUp.clear();
+        holdNotesDown.clear();
+        holdNotesLeft.clear();
+        holdNotesRight.clear();
+        bombNotesUp.clear();
+        bombNotesDown.clear();
+        bombNotesLeft.clear();
+        bombNotesRight.clear();
+        bombNotesSpecial.clear();
+        normalNotesUp.clear();
+        normalNotesDown.clear();
+        normalNotesLeft.clear();
+        normalNotesRight.clear();
+    }
 }
 
