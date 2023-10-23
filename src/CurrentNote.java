@@ -18,7 +18,7 @@ public class CurrentNote extends NoteSet {
 
     public CurrentNote(NoteSet noteSet) {
         this.originalNotes = noteSet;
-        this.currentSpeed = new Speed(0, 2);
+        this.currentSpeed = new Speed(0.0, 2.0);
         this.notes = new ArrayList<>();
     }
      // Methods
@@ -36,20 +36,20 @@ public class CurrentNote extends NoteSet {
             // do nothing
         }
         for (Note note : this.notes) {
-            note.updateCoordinate(frame);
             note.setSpeed(this.currentSpeed);
+            note.updateCoordinate(frame);
         }
     }
 
 
     public void speedUp() {
         // Set currentSpeed value
-        this.currentSpeed = new Speed(this.currentSpeed.getXSpeed(), this.currentSpeed.getYSpeed() * 2);
+        this.currentSpeed = new Speed(this.currentSpeed.getXSpeed(), this.currentSpeed.getYSpeed() + 1.0);
     }
 
     public void speedDown() {
         // Set currentSpeed value
-        this.currentSpeed = new Speed(this.currentSpeed.getXSpeed(), this.currentSpeed.getYSpeed() / 2);
+        this.currentSpeed = new Speed(this.currentSpeed.getXSpeed(), this.currentSpeed.getYSpeed() - 1.0);
     }
 
     public void deleteNote(Note note) {
@@ -73,8 +73,12 @@ public class CurrentNote extends NoteSet {
         return currentFrame;
     }
 
+    @Override
     public void wipe() {
-        this.notes.clear();
+        for (Note note : this.notes) {
+            this.originalNotes.delete(note);
+        }
+        this.notes = new ArrayList<>();
     }
 
     public void select(int frame) {

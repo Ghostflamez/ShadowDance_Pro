@@ -49,6 +49,14 @@ public abstract class MovingObject extends StaticObject{
         this.yCoordinate = yCoordinate;
     }
 
+    public static boolean isCollided(MovingObject movingObject1, MovingObject movingObject2){
+        double distance = Math.sqrt(Math.pow(movingObject1.getXCoordinate() - movingObject2.getXCoordinate(), 2) + Math.pow(movingObject1.getYCoordinate() - movingObject2.getYCoordinate(), 2));
+        if (distance <= 104.0){
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
 }

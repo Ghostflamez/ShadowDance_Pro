@@ -1,9 +1,9 @@
 import bagel.Image;
 
 public class BombNote extends Note{
+    protected static final double refY = 657.0;
     private Image img;
     private double xCoordinate;
-    private double yCoordinate;
     private Speed speed = new Speed(0,2.0);
     private String noteDirection;
     private int initialFrame;
@@ -21,7 +21,7 @@ public class BombNote extends Note{
     // Methods
     public boolean isTriggered() {
         double distance = Math.abs(this.yCoordinate - refY);
-        if (distance <= 200) {
+        if (distance <= 200.0) {
             return true;
         } else {
             return false;

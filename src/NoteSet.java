@@ -116,6 +116,10 @@ public class NoteSet {
         this.notes = new ArrayList<>();
     }
 
+    public void delete(Note note){
+        this.notes.remove(note);
+    }
+
 
 
 }

@@ -16,6 +16,7 @@ public class ShadowDance extends AbstractGame {
     private static final double refY = 657.0;
     private final static String GAME_TITLE = "SHADOW DANCE";
     private final Image BACKGROUND_IMAGE = new Image("res/background.png");
+    private final Image GUARDIAN = new Image("res/guardian.png");
 
     // Set of objects
     private LaneSet laneSet1;
@@ -31,6 +32,8 @@ public class ShadowDance extends AbstractGame {
     private CurrentNote currentNote3;
     private CurrentNote thisCurrentNote;
 
+    private int scoreRequired;
+
     // initialize key input states
     Player player = new Player();
 
@@ -45,25 +48,27 @@ public class ShadowDance extends AbstractGame {
     // timers
     private int bannerFrame = 0;
     private int doublescoreFrame = 0;
+    private int enemyFrame = 0;
 
     // sort lists of notes
     private List<SpecialNote> specialNotes = new ArrayList<>();
 
-    private List<HoldNote> holdNotesUp = new ArrayList<>();
-    private List<HoldNote> holdNotesDown = new ArrayList<>();
-    private List<HoldNote> holdNotesLeft = new ArrayList<>();
-    private List<HoldNote> holdNotesRight = new ArrayList<>();
+    private List<HoldNote> holdNotesUp;
+    private List<HoldNote> holdNotesDown;
+    private List<HoldNote> holdNotesLeft;
+    private List<HoldNote> holdNotesRight;
+    private List<BombNote> bombNotesUp;
+    private List<BombNote> bombNotesDown;
+    private List<BombNote> bombNotesLeft;
+    private List<BombNote> bombNotesRight;
+    private List<BombNote> bombNotesSpecial;
+    private List<Note> normalNotesUp;
+    private List<Note> normalNotesDown;
+    private List<Note> normalNotesLeft;
+    private List<Note> normalNotesRight;
 
-    private List<BombNote> bombNotesUp = new ArrayList<>();
-    private List<BombNote> bombNotesDown = new ArrayList<>();
-    private List<BombNote> bombNotesLeft = new ArrayList<>();
-    private List<BombNote> bombNotesRight = new ArrayList<>();
-    private List<BombNote> bombNotesSpecial = new ArrayList<>();
-
-    private List<Note> normalNotesUp = new ArrayList<>();
-    private List<Note> normalNotesDown = new ArrayList<>();
-    private List<Note> normalNotesLeft = new ArrayList<>();
-    private List<Note> normalNotesRight = new ArrayList<>();
+    // enemy
+    private List<Enemy> enemies = new ArrayList<>();
 
     // counters
     private int currentFrame = 0;  // frame counter
@@ -126,11 +131,8 @@ public class ShadowDance extends AbstractGame {
             case "Level 3":
                 this.drawGameInterface(3, input);
                 break;
-            case "Lose":
-                this.drawWiningInterface();
-                break;
-            case "Win":
-                this.drawLosingInterface();
+            case "Ending":
+                this.drawEndingInterface(input);
                 break;
         }
     }
@@ -162,6 +164,7 @@ public class ShadowDance extends AbstractGame {
         if (!this.isPaused){
             ++this.currentFrame;
         }
+
         // update frame counter
         player.update(input);
 
@@ -172,25 +175,32 @@ public class ShadowDance extends AbstractGame {
         test.draw();
         frame.draw();
         score.draw();
+        GUARDIAN.draw(800.0, 600.0);
 
-        // draw dynamic elements
-        List<Note> notes = new ArrayList<>();
-        NoteSet q = new NoteSet();
-        List<Note> current = new ArrayList<>();
-
-        // draw notes
+        // update current note and lane set
         switch (level) {
             case 1:
                 this.thisCurrentNote = this.currentNote1;
                 this.thisLaneSet = this.laneSet1;
+                this.scoreRequired = 150;
                 break;
             case 2:
                 this.thisCurrentNote = this.currentNote2;
                 this.thisLaneSet = this.laneSet2;
+                this.scoreRequired = 400;
                 break;
             case 3:
                 this.thisCurrentNote = this.currentNote3;
                 this.thisLaneSet = this.laneSet3;
+                this.scoreRequired = 350;
+        }
+
+        // win/lose condition
+        List<Note> originalNotes = this.thisCurrentNote.getOriginalNotes().getNotes();
+        Note lastNote = originalNotes.get(originalNotes.size() - 1);
+
+        if (this.currentFrame > lastNote.getLastFrame()) {
+            this.gameState = "Ending";
         }
 
         this.thisLaneSet.draw();
@@ -198,10 +208,60 @@ public class ShadowDance extends AbstractGame {
         this.thisCurrentNote.select(this.currentFrame);
         this.thisCurrentNote.update("keepSpeed", this.currentFrame);
 
-        // draw notes
-        this.thisCurrentNote.draw();
+        if (level == 3) {
+            // Enemy activity
+            // initialize enemy
+            this.enemyFrame++;
 
-        // note sorting
+            // Every 600 frames, create an enemy
+            if (this.enemyFrame % 600 == 0) {
+                enemies.add(new Enemy(this.currentFrame));
+            }
+
+            for (Enemy enemy : enemies) {
+                enemy.update();
+                enemy.draw();
+            }
+
+            // check if enemy is hit
+            List<Note> notesToRemove = new ArrayList<>();
+
+            for (Note note : this.thisCurrentNote.getNotes()) {
+                for (Enemy enemy : enemies) {
+                    if (note.getType().equals("Normal") && MovingObject.isCollided(enemy, note)) {
+                        // If there is a collision with a "Normal" type note, add it to the removal list
+                        notesToRemove.add(note);
+                    }
+                }
+            }
+
+            // Remove collided notes from the list after the loop
+            this.thisCurrentNote.getNotes().removeAll(notesToRemove);
+
+            //guardian activity
+
+        }
+
+        // initialize lists
+        specialNotes = new ArrayList<>();
+
+        holdNotesUp = new ArrayList<>();
+        holdNotesDown = new ArrayList<>();
+        holdNotesLeft = new ArrayList<>();
+        holdNotesRight = new ArrayList<>();
+
+        bombNotesUp = new ArrayList<>();
+        bombNotesDown = new ArrayList<>();
+        bombNotesLeft = new ArrayList<>();
+        bombNotesRight = new ArrayList<>();
+        bombNotesSpecial = new ArrayList<>();
+
+        normalNotesUp = new ArrayList<>();
+        normalNotesDown = new ArrayList<>();
+        normalNotesLeft = new ArrayList<>();
+        normalNotesRight = new ArrayList<>();
+
+        // sort notes
         for (Note note : this.thisCurrentNote.getNotes()) {
             if ("Hold".equals(note.getType())) {
                 if ("Up".equals(note.getDirection())){
@@ -246,20 +306,25 @@ public class ShadowDance extends AbstractGame {
         // score calculation
         // The following code is used to calculate the score after press action
         //bonus score
-        if (player.isSpaceReleased() && !player.isSpacePressed()) {
-            for (Note note : this.specialNotes) {
-                switch (note.getSpecialType()) {
-                    case "DoubleScore":
-                        this.isDoubleScore = true;
-                        this.doubleScoreBonus = 2;
-                        this.doublescoreFrame = 0;
-                        break;
-                    case "SpeedUp":
-                        this.thisCurrentNote.speedUp();
-                        break;
-                    case "SpeedDown":
-                        this.thisCurrentNote.speedDown();
-                        break;
+        if (player.isSpacePressed() && !player.isSpaceReleased()) {
+            for (SpecialNote note : this.specialNotes) {
+                if (note.isTriggered()) {
+                    System.out.println(note.getSpecialType());
+                    switch (note.getSpecialType()) {
+                        case "DoubleScore":
+                            this.isDoubleScore = true;
+                            this.doubleScoreBonus = 2;
+                            this.doublescoreFrame = 0;
+                            break;
+                        case "SpeedUp":
+                            this.thisCurrentNote.speedUp();
+                            this.score += 15;
+                            break;
+                        case "SpeedDown":
+                            this.thisCurrentNote.speedDown();
+                            this.score += 15;
+                            break;
+                    }
                 }
             }
 
@@ -272,10 +337,16 @@ public class ShadowDance extends AbstractGame {
                     this.doublescoreFrame = 0;
                 }
             }
+
+            player.resetSpacePressed();
+        }
+        if (player.isSpaceReleased()) {
+            player.resetSpaceReleased();
         }
 
+
         // Up
-        if (player.isUpReleased() && !player.isUpPressed()) {
+        if (player.isUpPressed() && !player.isUpReleased()) {
             int normalUpScore = 0;
             for (Note note : this.normalNotesUp) {
                 normalUpScore = note.getScore();
@@ -283,13 +354,15 @@ public class ShadowDance extends AbstractGame {
             }
 
             int holdUpScore = 0;
-            for (Note note : this.holdNotesUp) {
-                holdUpScore = note.getScore();
-                this.setBanner(note.getMark());
+            for (HoldNote note : this.holdNotesUp) {
+                holdUpScore = note.getLowerScore();
+                this.setBanner(note.getLowerMark());
             }
 
             for (BombNote note : this.bombNotesUp) {
-                if (note.isTriggered()) this.wipe = true;
+                if (note.isTriggered()) {
+                    this.wipe = true;
+                };
             }
 
             int totalUpScore = normalUpScore + holdUpScore;
@@ -309,9 +382,9 @@ public class ShadowDance extends AbstractGame {
             }
 
             int holdDownScore = 0;
-            for (Note note : this.holdNotesDown) {
-                holdDownScore = note.getScore();
-                this.setBanner(note.getMark());
+            for (HoldNote note : this.holdNotesDown) {
+                holdDownScore = note.getLowerScore();
+                this.setBanner(note.getLowerMark());
             }
 
             for (BombNote note : this.bombNotesDown) {
@@ -335,9 +408,9 @@ public class ShadowDance extends AbstractGame {
             }
 
             int holdLeftScore = 0;
-            for (Note note : this.holdNotesLeft) {
-                holdLeftScore = note.getScore();
-                this.setBanner(note.getMark());
+            for (HoldNote note : this.holdNotesLeft) {
+                holdLeftScore = note.getLowerScore();
+                this.setBanner(note.getLowerMark());
             }
 
             for (BombNote note : this.bombNotesLeft) {
@@ -362,9 +435,9 @@ public class ShadowDance extends AbstractGame {
             }
 
             int holdRightScore = 0;
-            for (Note note : this.holdNotesRight) {
-                holdRightScore = note.getScore();
-                this.setBanner(note.getMark());
+            for (HoldNote note : this.holdNotesRight) {
+                holdRightScore = note.getLowerScore();
+                this.setBanner(note.getLowerMark());
             }
 
             for (BombNote note : this.bombNotesRight) {
@@ -391,9 +464,9 @@ public class ShadowDance extends AbstractGame {
         // up
         if (player.isUpReleased()) {
             int holdUpScore = 0;
-            for (Note note : this.holdNotesUp) {
-                holdUpScore += note.getScore();
-                this.setBanner(note.getMark());
+            for (HoldNote note : this.holdNotesUp) {
+                holdUpScore += note.getUpperScore();
+                this.setBanner(note.getUpperMark());
             }
             this.score += holdUpScore * this.doubleScoreBonus;
             player.resetUpReleased();
@@ -402,9 +475,9 @@ public class ShadowDance extends AbstractGame {
         // down
         if (player.isDownReleased()) {
             int holdDownScore = 0;
-            for (Note note : this.holdNotesDown) {
-                holdDownScore += note.getScore();
-                this.setBanner(note.getMark());
+            for (HoldNote note : this.holdNotesDown) {
+                holdDownScore += note.getUpperScore();
+                this.setBanner(note.getUpperMark());
             }
             this.score += holdDownScore * this.doubleScoreBonus;
             player.resetDownReleased();
@@ -413,9 +486,9 @@ public class ShadowDance extends AbstractGame {
         // left
         if (player.isLeftReleased()) {
             int holdLeftScore = 0;
-            for (Note note : this.holdNotesLeft) {
-                holdLeftScore += note.getScore();
-                this.setBanner(note.getMark());
+            for (HoldNote note : this.holdNotesLeft) {
+                holdLeftScore += note.getUpperScore();
+                this.setBanner(note.getUpperMark());
             }
             this.score += holdLeftScore * this.doubleScoreBonus;
             player.resetLeftReleased();
@@ -424,9 +497,9 @@ public class ShadowDance extends AbstractGame {
         // right
         if (player.isRightReleased()) {
             int holdRightScore = 0;
-            for (Note note : this.holdNotesRight) {
-                holdRightScore += note.getScore();
-                this.setBanner(note.getMark());
+            for (HoldNote note : this.holdNotesRight) {
+                holdRightScore += note.getUpperScore();
+                this.setBanner(note.getUpperMark());
             }
             this.score += holdRightScore * this.doubleScoreBonus;
             player.resetRightReleased();
@@ -444,30 +517,47 @@ public class ShadowDance extends AbstractGame {
             this.banner = "Lane Clear";
         }
 
+        // draw notes
+        this.thisCurrentNote.draw();
+
         // draw banner
         if (this.bannerFrame > 0) {
-            Message banner = new Message(40, this.banner, WINDOW_WIDTH / 2.0, WINDOW_HEIGHT / 2.0);
+            Message banner = new Message(40, this.banner, 430, Window.getHeight() / 2.0);
             banner.draw();
-            this.bannerFrame--;  // 递减帧计数
+            this.bannerFrame--;
 
             if (this.bannerFrame == 0) {
-                this.banner = "";  // 清除消息
+                this.banner = "";
             }
         }
 
 
 
 
-    }
-
-
-
-    private void drawWiningInterface() {
 
     }
 
-    private void drawLosingInterface() {
 
+
+    private void drawEndingInterface(Input input) {
+        String ENDING = "";
+        double x = 0.0;
+        if(this.score >= this.scoreRequired) {
+            ENDING = "CLEAR!";
+            x=350.0;
+        } else {
+            ENDING = "TRY AGAIN!";
+            x=285.0;
+        }
+        String SUBTITLE = "PRESS SPACE TO RETURN TO LEVEL SELECTION";
+        Message ending = new Message(64,ENDING, x, 300.0);
+        Message subtitle = new Message(24,SUBTITLE, 150, 500.0);
+        ending.draw();
+        subtitle.draw();
+
+        if (input.wasPressed(Keys.SPACE)) {
+            this.gameState = "Start";
+        }
     }
 
     public void setBanner(String message) {

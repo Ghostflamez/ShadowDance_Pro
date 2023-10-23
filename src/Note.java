@@ -1,9 +1,9 @@
 import bagel.*;
 public class Note extends MovingObject{
 
-    protected static final double refY = 657.0;
+    private static final double refY = 657.0;
     private Image img;
-    private double yCoordinate;
+    protected double yCoordinate;
     private double xCoordinate;
     private double initialyCoordinate;
     private Speed speed = new Speed(0,2.0); //default speed
@@ -51,7 +51,7 @@ public class Note extends MovingObject{
             this.specialType = row2;
             this.noteDirection = row1;
             this.initialFrame = Integer.parseInt(frame);
-            this.noteType = "Normal";
+            this.noteType = "Bomb";
             this.initialyCoordinate = 100.0;
             this.yCoordinate = 100.0;
             this.lastFrame = this.initialFrame + (int) Math.ceil(668.0/ speed.getYSpeed()); //default last frame

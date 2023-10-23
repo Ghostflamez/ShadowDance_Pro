@@ -29,7 +29,7 @@ public class Player {
             rightPressed = true;
         }
         if (input.wasPressed(Keys.UP)) {
-            // 设置按下标志
+            //
             upPressed = true;
         }
         if (input.wasPressed(Keys.DOWN)) {
